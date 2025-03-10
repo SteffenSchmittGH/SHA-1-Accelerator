@@ -99,6 +99,11 @@ void print_block(unsigned char* message) {
     free(M1);
 }
 
+unsigned int RotShift1(uint32_t X) {
+    return (X << 1) | (X >> 31);
+}
+
+/*
 unsigned int RotShift1(uint32_t X){
 	unsigned int bitmask1 = 0x80000000;
 	unsigned int MSBs1;
@@ -110,30 +115,16 @@ unsigned int RotShift1(uint32_t X){
 	X_complete1 = X_shifted1 | MSBs1;
 	return X_complete1;
 }
-
-unsigned int RotShift5(uint32_t X){
-	unsigned int bitmask5 = 0xf8000000;
-	unsigned int MSBs5;
-	MSBs5 = X & bitmask5;
-	MSBs5 = MSBs5 >> (32-5);
-	unsigned int X_shifted5;
-	X_shifted5 = X << 5;
-	unsigned int X_complete5;
-	X_complete5 = X_shifted5 | MSBs5;
-	return X_complete5;
+*/
+unsigned int RotShift5(uint32_t X) {
+    return (X << 5) | (X >> 27);
 }
 
-unsigned int RotShift30(uint32_t X){
-	unsigned int bitmask30 = 0xfffffffc;
-	unsigned int MSBs30;
-	MSBs30 = X & bitmask30;
-	MSBs30 = MSBs30 >> (32-30);
-	unsigned int X_shifted30;
-	X_shifted30 = X << 30;
-	unsigned int X_complete30;
-	X_complete30 = X_shifted30 | MSBs30;
-	return X_complete30;
+
+unsigned int RotShift30(uint32_t X) {
+    return (X << 30) | (X >> 2);
 }
+
 uint32_t CH(uint32_t X, uint32_t Y, uint32_t Z) {
     return (X & Y) ^ ((~X) & Z);
 }
