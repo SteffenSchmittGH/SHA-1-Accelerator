@@ -1,5 +1,5 @@
 ## SHA-1 Algorithm
-**Padded Block Message**
+**Padded Block Message**  
 M := Message  
 l := length of message in bit  
 k := number of zeros  
