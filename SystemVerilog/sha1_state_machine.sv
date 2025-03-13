@@ -159,7 +159,7 @@ module sha1_state_machine(
 				
 			assign q_control = control;
 			assign q_state   = state;
-			
+			// this part should be changed since it uses too much memory
 			logic [31:0] K [79:0] = '{
 				// 60 ≤ t ≤ 79
 				32'hCA62C1D6, 32'hCA62C1D6, 32'hCA62C1D6, 32'hCA62C1D6, 32'hCA62C1D6,
