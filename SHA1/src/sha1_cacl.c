@@ -14,6 +14,7 @@
 #include <inttypes.h>
 #include <stdio.h>
 
+// SHA-1 uses a sequence of eighty constant 32-bit words.
 void init_sha1(uint32_t * K, uint32_t * H) {
     for (int i = 0; i < 80; i++) {
         if (i <= 19) {
@@ -40,7 +41,7 @@ uint32_t get_length_in_bytes(const char* message) {
     }
     return i;
 }
-
+//padding the message to ensure that the message is a multiple of 512 or 1024 bits.
 void padded_block_message(unsigned char* message, uint32_t* W1) {
     uint32_t lengthOfMessage = get_length_in_bytes((const char*)message);
     uint32_t padded_block_message[16] = { };
@@ -68,7 +69,7 @@ void padded_block_message(unsigned char* message, uint32_t* W1) {
     blockDecomposition(M1,W1);
     free(M1);
 }
-
+//helper method to ensure padded block message is correct
 void print_block(unsigned char* message) {
     uint32_t lengthOfMessage = get_length_in_bytes((const char*)message);
     uint32_t padded_block_message[16] = { };
@@ -98,33 +99,19 @@ void print_block(unsigned char* message) {
     }
     free(M1);
 }
-
+//helper function for sha1 algorithm
 unsigned int RotShift1(uint32_t X) {
     return (X << 1) | (X >> 31);
 }
-
-/*
-unsigned int RotShift1(uint32_t X){
-	unsigned int bitmask1 = 0x80000000;
-	unsigned int MSBs1;
-	MSBs1 = X & bitmask1;
-	MSBs1 = MSBs1 >> (32-1);
-	unsigned int X_shifted1;
-	X_shifted1 = X << 1;
-	unsigned int X_complete1;
-	X_complete1 = X_shifted1 | MSBs1;
-	return X_complete1;
-}
-*/
+//helper function for sha1 algorithm
 unsigned int RotShift5(uint32_t X) {
     return (X << 5) | (X >> 27);
 }
-
-
+//helper function for sha1 algorithm
 unsigned int RotShift30(uint32_t X) {
     return (X << 30) | (X >> 2);
 }
-
+// SHA-1 uses the logical functions choose, majority and priority
 uint32_t CH(uint32_t X, uint32_t Y, uint32_t Z) {
     return (X & Y) ^ ((~X) & Z);
 }
@@ -145,7 +132,7 @@ void blockDecomposition(const uint32_t* M1, uint32_t* W1) {
         W1[i] = RotShift1(W1[i - 3] ^ W1[i - 8] ^ W1[i - 14] ^ W1[i - 16]);
     }
 }
-
+//helper function to execute the logical functions CH, MAJ and PARITY in sha1 algorithm
 uint32_t f_t(uint32_t t, uint32_t X, uint32_t Y, uint32_t Z) {
     if (t <= 19) {
         return CH(X, Y, Z);
@@ -158,6 +145,7 @@ uint32_t f_t(uint32_t t, uint32_t X, uint32_t Y, uint32_t Z) {
     }
 }
 
+//actual hash computation, receives hash_ptr to output the hash and X as Padded Block Message
 void HashComputation(uint32_t* hash_ptr, const uint32_t* X, const uint32_t *prev_hash) {
     uint32_t* K1 = calloc(80, sizeof(uint32_t));
     uint32_t* H1 = calloc(5, sizeof(uint32_t));
@@ -171,6 +159,7 @@ void HashComputation(uint32_t* hash_ptr, const uint32_t* X, const uint32_t *prev
     for(int i = 0; i < 80; i++){
     	printf("Hexadecimal K: 0x%" PRIx32 " " "%d" "\n", K1[i],i);
     }
+// needs to be executed once sincee message fits in one 512 bit block.
 for(int i = 1; i < 2; i++){
     uint32_t a = H1[0], b = H1[1], c = H1[2], d = H1[3], e = H1[4];
     uint32_t T;
@@ -187,12 +176,14 @@ for(int i = 1; i < 2; i++){
         b = a;
         a = T;
     }
+    //concatenation of H gives the 160 bit hash value
     H1[0] += a;
     H1[1] += b;
     H1[2] += c;
     H1[3] += d;
     H1[4] += e;
 }
+    //print for verification
     for(int i = 0; i < 5; i++){
     	printf("Hexadecimal H1: 0x%" PRIx32 "\n", H1[i]);
     }
