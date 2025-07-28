@@ -29,29 +29,6 @@ module sha1_state_machine(
 	localparam BITWIDTH        = $clog2(ITERATIONS);
 	
 	
-
-	/* ### start pulse detection ##############################################
-	
-	CPU asserts a start pulse ...
-	
-								   ___________________________________________________
-	start_signal:		__________|                                                   |_______________________________________
-	
-										 ^
-										 |
-										 
-								 ACTUAL START
-						
-	
-	We are using the start_signal to derive a 50MHz related start pulse ..., which is only high for 20ns ... 
-	
-							             _
-							____________| |________________________________________________________________________________________
-	
-	
-	We use this start pulse to trigger our sha-1 processing stage ...
-	
-	*/
 	
 	// with the following structure, we are detecting the rising edge of our start signal ... 
 	
@@ -71,8 +48,6 @@ module sha1_state_machine(
 	logic sync_start; assign sync_start = (sync_reg == 4'b0011) ? 1'b1 : 1'b0; 
 
 	assign q_start = sync_start;
-	
-	// ### 'state-machine' ... #######################################################################################################
 		
 	logic [1:0] control = 0;	
 		
