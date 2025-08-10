@@ -11,5 +11,7 @@ message has to be added. k is calculated, by finding the smallest non-negative k
 equation.  
 $l+1+k = 448mod512$  
 **SHA-1 Algorithm**  
+
 ![grafik](https://github.com/user-attachments/assets/52c7ba00-c896-42da-ad6c-1a1386310997)  
+
 After that H has to be concatenated.
